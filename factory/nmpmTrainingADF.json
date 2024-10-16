@@ -1,0 +1,9 @@
+{
+	"name": "nmpmTrainingADF",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "a53eb5cd-ff08-48cb-afae-1260d705ea26",
+		"tenantId": "3a37493e-ea8b-480a-82f4-75e105814d87"
+	}
+}

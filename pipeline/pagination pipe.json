@@ -1,0 +1,155 @@
+{
+	"name": "pagination pipe",
+	"properties": {
+		"activities": [
+			{
+				"name": "usersapi",
+				"type": "WebActivity",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"method": "GET",
+					"url": "https://reqres.in/api/users"
+				}
+			},
+			{
+				"name": "ForEach1",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "usersapi",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@range(1,activity('usersapi').output.total_pages)",
+						"type": "Expression"
+					},
+					"isSequential": true,
+					"activities": [
+						{
+							"name": "Copy data1",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "RestSource",
+									"httpRequestTimeout": "00:01:40",
+									"requestInterval": "00.00:00:00.010",
+									"requestMethod": "GET",
+									"paginationRules": {
+										"supportRFC5988": "true"
+									}
+								},
+								"sink": {
+									"type": "DelimitedTextSink",
+									"storeSettings": {
+										"type": "AzureBlobFSWriteSettings"
+									},
+									"formatSettings": {
+										"type": "DelimitedTextWriteSettings",
+										"quoteAllText": true,
+										"fileExtension": ".txt"
+									}
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"mappings": [
+										{
+											"source": {
+												"path": "['id']"
+											},
+											"sink": {
+												"ordinal": 1
+											}
+										},
+										{
+											"source": {
+												"path": "['email']"
+											},
+											"sink": {
+												"ordinal": 2
+											}
+										},
+										{
+											"source": {
+												"path": "['first_name']"
+											},
+											"sink": {
+												"ordinal": 3
+											}
+										},
+										{
+											"source": {
+												"path": "['last_name']"
+											},
+											"sink": {
+												"ordinal": 4
+											}
+										},
+										{
+											"source": {
+												"path": "['avatar']"
+											},
+											"sink": {
+												"ordinal": 5
+											}
+										}
+									],
+									"collectionReference": "$['data']"
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "RestResource2",
+									"type": "DatasetReference",
+									"parameters": {
+										"pages": {
+											"value": "?page=@{item()}",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "DelimitedText1",
+									"type": "DatasetReference",
+									"parameters": {
+										"page1response": {
+											"value": "apifile@{item()}.csv",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						}
+					]
+				}
+			}
+		],
+		"annotations": [],
+		"lastPublishTime": "2024-10-10T08:21:15Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}
