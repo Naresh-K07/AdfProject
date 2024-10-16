@@ -19,6 +19,55 @@
 			"firstRowAsHeader": true,
 			"quoteChar": "\""
 		},
-		"schema": []
+		"schema": [
+			{
+				"name": "driver_number",
+				"type": "String"
+			},
+			{
+				"name": "broadcast_name",
+				"type": "String"
+			},
+			{
+				"name": "full_name",
+				"type": "String"
+			},
+			{
+				"name": "name_acronym",
+				"type": "String"
+			},
+			{
+				"name": "team_name",
+				"type": "String"
+			},
+			{
+				"name": "team_colour",
+				"type": "String"
+			},
+			{
+				"name": "first_name",
+				"type": "String"
+			},
+			{
+				"name": "last_name",
+				"type": "String"
+			},
+			{
+				"name": "headshot_url",
+				"type": "String"
+			},
+			{
+				"name": "country_code",
+				"type": "String"
+			},
+			{
+				"name": "session_key",
+				"type": "String"
+			},
+			{
+				"name": "meeting_key",
+				"type": "String"
+			}
+		]
 	}
 }
