@@ -1,0 +1,12 @@
+{
+	"name": "F1racingApiLS",
+	"properties": {
+		"annotations": [],
+		"type": "RestService",
+		"typeProperties": {
+			"url": "https://api.openf1.org/v1/drivers",
+			"enableServerCertificateValidation": true,
+			"authenticationType": "Anonymous"
+		}
+	}
+}
