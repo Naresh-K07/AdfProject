@@ -1,0 +1,158 @@
+{
+	"name": "F1APIpipeline",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy data1",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "RestSource",
+						"httpRequestTimeout": "00:01:40",
+						"requestInterval": "00.00:00:00.010",
+						"requestMethod": "GET",
+						"paginationRules": {
+							"supportRFC5988": "true"
+						}
+					},
+					"sink": {
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"path": "$['driver_number']"
+								},
+								"sink": {
+									"name": "driver_number"
+								}
+							},
+							{
+								"source": {
+									"path": "$['broadcast_name']"
+								},
+								"sink": {
+									"name": "broadcast_name"
+								}
+							},
+							{
+								"source": {
+									"path": "$['full_name']"
+								},
+								"sink": {
+									"name": "full_name"
+								}
+							},
+							{
+								"source": {
+									"path": "$['name_acronym']"
+								},
+								"sink": {
+									"name": "name_acronym"
+								}
+							},
+							{
+								"source": {
+									"path": "$['team_name']"
+								},
+								"sink": {
+									"name": "team_name"
+								}
+							},
+							{
+								"source": {
+									"path": "$['team_colour']"
+								},
+								"sink": {
+									"name": "team_colour"
+								}
+							},
+							{
+								"source": {
+									"path": "$['first_name']"
+								},
+								"sink": {
+									"name": "first_name"
+								}
+							},
+							{
+								"source": {
+									"path": "$['last_name']"
+								},
+								"sink": {
+									"name": "last_name"
+								}
+							},
+							{
+								"source": {
+									"path": "$['headshot_url']"
+								},
+								"sink": {
+									"name": "headshot_url"
+								}
+							},
+							{
+								"source": {
+									"path": "$['country_code']"
+								},
+								"sink": {
+									"name": "country_code"
+								}
+							},
+							{
+								"source": {
+									"path": "$['session_key']"
+								},
+								"sink": {
+									"name": "session_key"
+								}
+							},
+							{
+								"source": {
+									"path": "$['meeting_key']"
+								},
+								"sink": {
+									"name": "meeting_key"
+								}
+							}
+						],
+						"mapComplexValuesToString": false
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "F1racingAPI",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "F1DriversDS",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"annotations": []
+	}
+}

@@ -1,0 +1,12 @@
+{
+	"name": "F1racingAPI",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "F1racingApiLS",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "RestResource",
+		"schema": []
+	}
+}
