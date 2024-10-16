@@ -12,12 +12,76 @@
 					"name": "f1driversdata"
 				}
 			],
-			"sinks": [],
-			"transformations": [],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "clean_data",
+						"type": "DatasetReference"
+					},
+					"name": "storage",
+					"rejectedDataLinkedService": {
+						"referenceName": "nycstgaccount",
+						"type": "LinkedServiceReference"
+					}
+				}
+			],
+			"transformations": [
+				{
+					"name": "select1"
+				},
+				{
+					"name": "distinctrows"
+				},
+				{
+					"name": "sort1"
+				}
+			],
 			"scriptLines": [
-				"source(allowSchemaDrift: true,",
+				"source(output(",
+				"          driver_number as integer,",
+				"          broadcast_name as string,",
+				"          full_name as string,",
+				"          name_acronym as string,",
+				"          team_name as string,",
+				"          team_colour as string,",
+				"          first_name as string,",
+				"          last_name as string,",
+				"          headshot_url as string,",
+				"          country_code as string,",
+				"          session_key as string,",
+				"          meeting_key as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     ignoreNoFilesFound: false) ~> f1driversdata"
+				"     inferDriftedColumnTypes: true,",
+				"     ignoreNoFilesFound: false,",
+				"     partitionBy('hash', 1)) ~> f1driversdata",
+				"f1driversdata select(mapColumn(",
+				"          driver_number,",
+				"          broadcast_name,",
+				"          full_name,",
+				"          name_acronym,",
+				"          team_name,",
+				"          team_colour,",
+				"          first_name,",
+				"          last_name,",
+				"          headshot_url,",
+				"          country_code",
+				"     ),",
+				"     partitionBy('hash', 1),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: true) ~> select1",
+				"select1 aggregate(groupBy(driver_number),",
+				"     each(match(name!='driver_number'), $$ = first($$))) ~> distinctrows",
+				"distinctrows sort(asc(driver_number, true)) ~> sort1",
+				"sort1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     partitionFileNames:['drivers.csv'],",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> storage"
 			]
 		}
 	}
