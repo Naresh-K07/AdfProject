@@ -1,0 +1,17 @@
+{
+	"name": "AzureDB",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "AzureSqlDatabase",
+		"typeProperties": {
+			"server": "nmpmsvr.database.windows.net",
+			"database": "nmpm-db",
+			"encrypt": "mandatory",
+			"trustServerCertificate": true,
+			"authenticationType": "SQL",
+			"userName": "nmpmadmin",
+			"encryptedCredential": "ew0KICAiVmVyc2lvbiI6ICIyMDE3LTExLTMwIiwNCiAgIlByb3RlY3Rpb25Nb2RlIjogIktleSIsDQogICJTZWNyZXRDb250ZW50VHlwZSI6ICJQbGFpbnRleHQiLA0KICAiQ3JlZGVudGlhbElkIjogIkRBVEFGQUNUT1JZQDU1QTdBNUQwLUQwRDQtNEE0Qi1BRTJDLTdBMEU1Q0VBMzJCMV82ODJlYjlmZC0yMGNjLTQ4NmEtYTNiNy04ZWUxMzUzMDUzOTciDQp9"
+		}
+	}
+}
