@@ -1,0 +1,47 @@
+{
+	"name": "AzuredbFinalTable",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureDB",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "salesorderid",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "shiptoaddressid",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "TotalDue",
+				"type": "money",
+				"precision": 19,
+				"scale": 4
+			},
+			{
+				"name": "CustomerID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Customer_name",
+				"type": "nvarchar"
+			},
+			{
+				"name": "quantity",
+				"type": "int",
+				"precision": 10
+			}
+		],
+		"typeProperties": {
+			"schema": "SalesLT",
+			"table": "SalesFinal"
+		}
+	}
+}
