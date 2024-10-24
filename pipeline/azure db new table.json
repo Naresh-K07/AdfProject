@@ -1,6 +1,62 @@
 {
 	"name": "azure db new table",
 	"properties": {
+		"activities": [
+			{
+				"name": "SQL_DB_Join_Sales_and_Customer_Tables",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": "select a.salesorderid, a.shiptoaddressid, a.TotalDue,c.CustomerID,concat(c.FIRSTname,' ',c.lastname) as Customer_name,sum(so.OrderQty) quantity \r\nfrom [SalesLT].[SalesOrderHeader] a \r\ninner join \r\n[SalesLT].[Customer] C\r\n    on a.CustomerID=c.CustomerID\r\ninner join [SalesLT].[SalesOrderDetail] so\r\n    on a.salesorderid=so.salesorderid\r\ngroup by\r\na.SalesOrderID, a.ShipToAddressID, a.TotalDue, c.CustomerID,concat(c.FIRSTname,' ',c.lastname)",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"writeBehavior": "upsert",
+						"upsertSettings": {
+							"useTempDB": true,
+							"keys": [
+								"salesorderid"
+							]
+						},
+						"sqlWriterUseTableLock": false,
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "Azuredbtable1",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "AzuredbFinalTable",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
 		"annotations": []
 	}
 }
